@@ -1,7 +1,7 @@
 import React from "react";
 import { apiGetSkillsAndCoursesFromServer, apiaddNewStudentInServer } from "../../api/api";
 import CourseCheckbox from './CourseCheckbox'
-// import SelectSkills from '../students/SelectSkills'
+import SelectSkills from '../students/SelectSkills'
 //? import { apiGetStudentsFromServer } from "../../api/api";
 
 class CreateStudent extends React.Component {
@@ -18,7 +18,6 @@ class CreateStudent extends React.Component {
          desiredList: {},
          courses: [],
          Interested: [],
-
       };
    }
 
@@ -132,7 +131,6 @@ class CreateStudent extends React.Component {
 
       const student = { first_name: this.state.studentFirstName, "last_name": this.state.studentLastName, "existing": exSkillsList, "desired": deSkillsList, "interested": this.state.Interested }
       this.addNewStudentInServer(student)
-
    }
 
    render() {
@@ -184,42 +182,14 @@ class CreateStudent extends React.Component {
                <div className="row">
                   <div className="col-md-12">
                      <h3>Existing Skills</h3>
-                     {this.state.numOfSelect.map(iselect => (
-                        <div key={iselect} className="row">
-                           <div className="col-md-6 mb-2">
-                              <label htmlFor=""> </label>
-                              <select
-                                 className="custom-select d-block w-100"
-                                 id={"existingSkill-" + iselect}
-                                 required=""
-                                 onChange={(e) => {
-                                    this.handleChangeExistingSkillName(e)
-                                 }}
-                              >
-                                 ><option value="">Choose...</option>
-                                 {this.state.Skills.map((skill, index) => (
-                                    <option value={index + 1} key={skill}>
-                                       {skill}
-                                    </option>
-                                 ))}
-                              </select>
-                           </div>
-                           <div className="col-md-6">
-                              <div className="mt-2"><small className="float-left">1</small><small className="float-right">5</small></div>
-                              <input
-                                 type="range"
-                                 className="custom-range"
-                                 id={"existingLevel-" + iselect}
-                                 data-skill-ref={"existingSkill-" + iselect}
-                                 max="5"
-                                 min="1"
-                                 onChange={(r) => {
-                                    this.handleChangeExistingLevel(r)
-                                 }}
-                              />
-                           </div>
-                        </div>
+
+
+                     {this.state.Skills.length !== 0 && this.state.numOfSelect.map(iselect => (
+                        <SelectSkills key={iselect} iselect={iselect} selectedVal={null} Skills={this.state.Skills} handleChangeExistingSkillName={this.handleChangeExistingSkillName.bind(this)} handleChangeExistingLevel={this.handleChangeExistingLevel.bind(this)} />
                      ))}
+
+
+
 
                      <div className="row">
                         <div className="col-md-12">
@@ -239,42 +209,11 @@ class CreateStudent extends React.Component {
                <div className="row">
                   <div className="col-md-12">
                      <h3>Desired Skills</h3>
-                     {this.state.numOfSelectD.map(iselect => (
-                        <div key={iselect} className="row">
-                           <div className="col-md-6 mb-2">
-                              <label htmlFor=""> </label>
-                              <select
-                                 className="custom-select d-block w-100"
-                                 id={"existingSkill-" + iselect}
-                                 required=""
-                                 onChange={(e) => {
-                                    this.handleChangeDesiredSkillName(e)
-                                 }}
-                              >
-                                 ><option value="">Choose...</option>
-                                 {this.state.Skills.map((skill, index) => (
-                                    <option value={index + 1} key={skill}>
-                                       {skill}
-                                    </option>
-                                 ))}
-                              </select>
-                           </div>
-                           <div className="col-md-6">
-                              <div className="mt-2"><small className="float-left">1</small><small className="float-right">5</small></div>
-                              <input
-                                 type="range"
-                                 className="custom-range"
-                                 id={"existingLevel-" + iselect}
-                                 data-skill-ref={"existingSkill-" + iselect}
-                                 max="5"
-                                 min="1"
-                                 onChange={(r) => {
-                                    this.handleChangeDesiredLevel(r)
-                                 }}
-                              />
-                           </div>
-                        </div>
+
+                     {this.state.Skills.length !== 0 && this.state.numOfSelectD.map(iselect => (
+                        <SelectSkills key={iselect} iselect={iselect} Skills={this.state.Skills} handleChangeExistingSkillName={this.handleChangeDesiredSkillName.bind(this)} handleChangeExistingLevel={this.handleChangeDesiredLevel.bind(this)} />
                      ))}
+
 
                      <div className="row">
                         <div className="col-md-12">
@@ -300,7 +239,7 @@ class CreateStudent extends React.Component {
 
                   {this.state.courses.map((course, index) => (
                      <div key={course} className="col-md-12">
-                        <CourseCheckbox course={course} index={index} handleCheckbox={this.handleCheckbox.bind(this)} />
+                        <CourseCheckbox Checked={false} course={course} index={index} handleCheckbox={this.handleCheckbox.bind(this)} />
                      </div>
                   ))}
                </div>
@@ -359,3 +298,78 @@ export default CreateStudent;
                </div> */}
 
 
+               // {this.state.numOfSelect.map(iselect => (
+               //    <div key={iselect} className="row">
+               //       <div className="col-md-6 mb-2">
+               //          <label htmlFor=""> </label>
+               //          <select
+               //             className="custom-select d-block w-100"
+               //             id={"existingSkill-" + iselect}
+               //             required=""
+               //             onChange={(e) => {
+               //                this.handleChangeExistingSkillName(e)
+               //             }}
+               //          >
+               //             ><option value="">Choose...</option>
+               //             {this.state.Skills.map((skill, index) => (
+               //                <option value={index + 1} key={skill}>
+               //                   {skill}
+               //                </option>
+               //             ))}
+               //          </select>
+               //       </div>
+               //       <div className="col-md-6">
+               //          <div className="mt-2"><small className="float-left">1</small><small className="float-right">5</small></div>
+               //          <input
+               //             type="range"
+               //             className="custom-range"
+               //             id={"existingLevel-" + iselect}
+               //             data-skill-ref={"existingSkill-" + iselect}
+               //             max="5"
+               //             min="1"
+               //             onChange={(r) => {
+               //                this.handleChangeExistingLevel(r)
+               //             }}
+               //          />
+               //       </div>
+               //    </div>
+               // ))}
+
+
+
+               // {this.state.numOfSelectD.map(iselect => (
+               //    <div key={iselect} className="row">
+               //       <div className="col-md-6 mb-2">
+               //          <label htmlFor=""> </label>
+               //          <select
+               //             className="custom-select d-block w-100"
+               //             id={"existingSkill-" + iselect}
+               //             required=""
+               //             onChange={(e) => {
+               //                this.handleChangeDesiredSkillName(e)
+               //             }}
+               //          >
+               //             ><option value="">Choose...</option>
+               //             {this.state.Skills.map((skill, index) => (
+               //                <option value={index + 1} key={skill}>
+               //                   {skill}
+               //                </option>
+               //             ))}
+               //          </select>
+               //       </div>
+               //       <div className="col-md-6">
+               //          <div className="mt-2"><small className="float-left">1</small><small className="float-right">5</small></div>
+               //          <input
+               //             type="range"
+               //             className="custom-range"
+               //             id={"existingLevel-" + iselect}
+               //             data-skill-ref={"existingSkill-" + iselect}
+               //             max="5"
+               //             min="1"
+               //             onChange={(r) => {
+               //                this.handleChangeDesiredLevel(r)
+               //             }}
+               //          />
+               //       </div>
+               //    </div>
+               // ))}

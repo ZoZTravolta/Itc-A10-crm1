@@ -64,8 +64,11 @@ def get_students(id):
                       'created': student['created'],
                       'updated': student['updated'],
                       'existing': existingList,
+                      'existing_indexes': student['existing'],
                       'desired': desiredList,
-                      'interested': interestedList
+                      'desired_indexes': student['desired'],
+                      'interested': interestedList,
+                      'interested_indexes': student['interested']
                       }
         studentsList.append(theStudent)
     return jsonify({'students': studentsList})

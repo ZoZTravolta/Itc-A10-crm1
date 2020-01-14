@@ -3,6 +3,7 @@ import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import StudentPage from './components/students/StudentPage'
 import CreateStudent from './components/students/createStudent'
+import UpdateStudent from './components/students/UpdateStudent'
 import Dashboard from './components/students/Dashboard'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
@@ -24,6 +25,9 @@ function App() {
           </Route>
           <Route path={"/CreateStudent"} >
             <CreateStudent />
+          </Route>
+          <Route path={"/UpdateStudent"} >
+            <UpdateStudent />
           </Route>
         </Switch>
         <Footer />

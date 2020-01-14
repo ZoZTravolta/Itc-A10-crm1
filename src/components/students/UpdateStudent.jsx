@@ -1,13 +1,16 @@
 import React from "react";
-import { apiGetSkillsAndCoursesFromServer, apiaddNewStudentInServer } from "../../api/api";
+import { apiGetSkillsAndCoursesFromServer, apiaddNewStudentInServer, apiGetStudentsFromServer } from "../../api/api";
 import CourseCheckbox from './CourseCheckbox'
-// import SelectSkills from '../students/SelectSkills'
+import SelectSkills from '../students/SelectSkills'
+import { withRouter } from "react-router-dom";
+
 //? import { apiGetStudentsFromServer } from "../../api/api";
 
 class CreateStudent extends React.Component {
    constructor(props) {
       super(props);
       this.state = {
+         student: [],
          Skills: [],
          studentFirstName: '',
          studentLastName: '',
@@ -18,7 +21,7 @@ class CreateStudent extends React.Component {
          desiredList: {},
          courses: [],
          Interested: [],
-
+         interested_indexes: []
       };
    }
 
@@ -32,17 +35,37 @@ class CreateStudent extends React.Component {
       }
    }
 
-   async addNewStudentInServer(student) {
+
+   async getStudentFromServer(id) {
       try {
-         const res = await apiaddNewStudentInServer(student);
-         console.log(res)
+         const res = await apiGetStudentsFromServer(id);
+         const student = res.data["students"][0]
+         this.setState({ student: student });
+         this.setStudentInfo(student)
       } catch {
          console.log("error");
       }
    }
+   setStudentInfo(student) {
+      // console.log(student)
+      this.setState({
+         studentFirstName: student['first_name'],
+         studentLastName: student['last_name'],
+         interested_indexes: student['interested_indexes'],
+         Interested: student['interested_indexes'],
+         numOfSelect: student['existing'],
+         numOfSelectD: student['desired'],
+         exSkillsList: student['existing_indexes'],
+         deSkillsList: student['desired_indexes'],
+      }, () => { console.log(this.state) })
+
+   }
 
    componentDidMount() {
       this.getSkillsAndCoursesFromServer();
+      const url = window.location;
+      const id = new URLSearchParams(url.search).get("id");
+      this.getStudentFromServer(id);
    }
 
 
@@ -103,13 +126,15 @@ class CreateStudent extends React.Component {
    }
 
    handleCheckbox(e, isChecked) {
-      let interested = this.state.Interested
-      if (isChecked)
-         interested.push(e.target.value)
+      let interested = this.state.interested_indexes
+      let boxInt = e.target.value
+      boxInt = parseInt(boxInt)
+      if (isChecked && !this.state.interested_indexes.includes(boxInt))
+         interested.push(parseInt(e.target.value))
       else {
          interested.pop(e.target.value)
       }
-      console.log(interested)
+      this.setState({ Interested: interested })
    }
 
    handleSubmit() {
@@ -132,7 +157,6 @@ class CreateStudent extends React.Component {
 
       const student = { first_name: this.state.studentFirstName, "last_name": this.state.studentLastName, "existing": exSkillsList, "desired": deSkillsList, "interested": this.state.Interested }
       this.addNewStudentInServer(student)
-
    }
 
    render() {
@@ -140,7 +164,7 @@ class CreateStudent extends React.Component {
          <div>
             <div className="jumbotron">
                <div className="container">
-                  <h1 className="display-3">Create student</h1>
+                  <h1 className="display-3">Update student</h1>
                   <p>welcom to...</p>
                </div>
             </div>
@@ -153,7 +177,7 @@ class CreateStudent extends React.Component {
                         type="text"
                         className="form-control"
                         id="firstName"
-                        placeholder=""
+                        placeholder={this.state.studentFirstName}
                         onChange={(e) => {
                            this.setState({ studentFirstName: e.target.value })
                         }}
@@ -168,7 +192,7 @@ class CreateStudent extends React.Component {
                         type="text"
                         className="form-control"
                         id="lastName"
-                        placeholder=""
+                        placeholder={this.state.studentLastName}
                         required=""
                         onChange={(e) => {
                            this.setState({ studentLastName: e.target.value })
@@ -184,42 +208,15 @@ class CreateStudent extends React.Component {
                <div className="row">
                   <div className="col-md-12">
                      <h3>Existing Skills</h3>
-                     {this.state.numOfSelect.map(iselect => (
-                        <div key={iselect} className="row">
-                           <div className="col-md-6 mb-2">
-                              <label htmlFor=""> </label>
-                              <select
-                                 className="custom-select d-block w-100"
-                                 id={"existingSkill-" + iselect}
-                                 required=""
-                                 onChange={(e) => {
-                                    this.handleChangeExistingSkillName(e)
-                                 }}
-                              >
-                                 ><option value="">Choose...</option>
-                                 {this.state.Skills.map((skill, index) => (
-                                    <option value={index + 1} key={skill}>
-                                       {skill}
-                                    </option>
-                                 ))}
-                              </select>
-                           </div>
-                           <div className="col-md-6">
-                              <div className="mt-2"><small className="float-left">1</small><small className="float-right">5</small></div>
-                              <input
-                                 type="range"
-                                 className="custom-range"
-                                 id={"existingLevel-" + iselect}
-                                 data-skill-ref={"existingSkill-" + iselect}
-                                 max="5"
-                                 min="1"
-                                 onChange={(r) => {
-                                    this.handleChangeExistingLevel(r)
-                                 }}
-                              />
-                           </div>
-                        </div>
+
+                    
+                     {this.state.Skills.length !== 0 && this.state.numOfSelect.map((iselect,index) => (
+                        
+                        <SelectSkills default={this.state.existingList[index]} key={iselect} iselect={iselect} selectedVal={null} Skills={this.state.Skills} handleChangeExistingSkillName={this.handleChangeExistingSkillName.bind(this)} handleChangeExistingLevel={this.handleChangeExistingLevel.bind(this)} />
                      ))}
+
+{console.log(this.state.exSkillsList[0])}
+
 
                      <div className="row">
                         <div className="col-md-12">
@@ -239,42 +236,11 @@ class CreateStudent extends React.Component {
                <div className="row">
                   <div className="col-md-12">
                      <h3>Desired Skills</h3>
-                     {this.state.numOfSelectD.map(iselect => (
-                        <div key={iselect} className="row">
-                           <div className="col-md-6 mb-2">
-                              <label htmlFor=""> </label>
-                              <select
-                                 className="custom-select d-block w-100"
-                                 id={"existingSkill-" + iselect}
-                                 required=""
-                                 onChange={(e) => {
-                                    this.handleChangeDesiredSkillName(e)
-                                 }}
-                              >
-                                 ><option value="">Choose...</option>
-                                 {this.state.Skills.map((skill, index) => (
-                                    <option value={index + 1} key={skill}>
-                                       {skill}
-                                    </option>
-                                 ))}
-                              </select>
-                           </div>
-                           <div className="col-md-6">
-                              <div className="mt-2"><small className="float-left">1</small><small className="float-right">5</small></div>
-                              <input
-                                 type="range"
-                                 className="custom-range"
-                                 id={"existingLevel-" + iselect}
-                                 data-skill-ref={"existingSkill-" + iselect}
-                                 max="5"
-                                 min="1"
-                                 onChange={(r) => {
-                                    this.handleChangeDesiredLevel(r)
-                                 }}
-                              />
-                           </div>
-                        </div>
+
+                     {this.state.Skills.length !== 0 && this.state.numOfSelectD.map(iselect => (
+                        <SelectSkills key={iselect} iselect={iselect} Skills={this.state.Skills} handleChangeExistingSkillName={this.handleChangeDesiredSkillName.bind(this)} handleChangeExistingLevel={this.handleChangeDesiredLevel.bind(this)} />
                      ))}
+
 
                      <div className="row">
                         <div className="col-md-12">
@@ -298,9 +264,9 @@ class CreateStudent extends React.Component {
                      <h3>Interested in courses</h3>
                   </div>
 
-                  {this.state.courses.map((course, index) => (
+                  {this.state.interested_indexes.length !== 0 && this.state.courses.map((course, index) => (
                      <div key={course} className="col-md-12">
-                        <CourseCheckbox course={course} index={index} handleCheckbox={this.handleCheckbox.bind(this)} />
+                        <CourseCheckbox Checked={this.state.interested_indexes.includes(index)} course={course} index={index} handleCheckbox={this.handleCheckbox.bind(this)} />
                      </div>
                   ))}
                </div>
@@ -327,35 +293,5 @@ class CreateStudent extends React.Component {
 }
 
 export default CreateStudent;
-
-
-
-{/* {this.state.Skills.length !== 0 && this.state.numOfSelect.map(iselect => (
-                  <SelectSkills iselect={iselect} Skills={this.state.Skills} handleChangeExistingSkillName={this.handleChangeExistingSkillName()} />
-               ))} */}
-
-{/* <div className="row">
-                  {this.state.Skills.map((skill, index) => (
-                     <div key={skill} className="col-md-6">
-                        <div className="row">
-                           <div className="col-md-6">
-                              <div className="custom-control custom-checkbox mr-sm-2">
-                                 <input type="checkbox" className="custom-control-input" id={skill} />
-                                 <label value={index + 1} key={skill} className="custom-control-label" htmlFor={skill}>{skill}</label>
-                              </div>
-                           </div>
-                           <div className="col-md-6">
-                              <input
-                                 type="range"
-                                 className="custom-range"
-                                 id="customRange1"
-                                 max="5"
-                                 min="1"
-                              />
-                           </div>
-                        </div>
-                     </div>
-                  ))}
-               </div> */}
 
 

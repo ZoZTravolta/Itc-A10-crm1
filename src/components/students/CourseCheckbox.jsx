@@ -4,7 +4,7 @@ class CourseCheckbox extends React.Component {
    constructor(props) {
       super(props);
       this.state = {
-         isChecked: false
+         isChecked: this.props.Checked
       };
    }
 
@@ -15,6 +15,7 @@ class CourseCheckbox extends React.Component {
                className="custom-control-input"
                id={this.props.course}
                value={this.props.index}
+               checked={this.state.isChecked}
                onChange={(e) => {
                   if (this.state.isChecked === false) {
                      this.setState({ isChecked: true })

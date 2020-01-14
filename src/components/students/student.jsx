@@ -49,7 +49,7 @@ function Student(props) {
          <div>
             <a
                className="btn edit"
-               href={`studentPage/?id=${props.student["id"]}`}
+               href={`UpdateStudent/?id=${props.student["id"]}`}
             >
                Edit Student
             </a>
