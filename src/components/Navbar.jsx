@@ -8,22 +8,29 @@ class Navbar extends React.Component {
 
    render() {
       return (
-         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+         <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
             <a className="navbar-brand" href="/">
                Hogwarts CRM
             </a>
-            <ul className="navbar-nav ml-3">
-               <li className="nav-item active">
-                  <a className="nav-link" href="/">
-                     Home <span className="sr-only">(current)</span>
+            <div className="collapse navbar-collapse" id="navbarSupportedContent">
+               <ul className="navbar-nav mr-auto">
+                  <li className="nav-item">
+                     <a className="nav-link" href="/">
+                        Home <span className="sr-only">(current)</span>
+                     </a>
+                  </li>
+                  <li className="nav-item">
+                     <a className="nav-link" href="/StudentsList">
+                        Students list
                   </a>
-               </li>
-               <li className="nav-item">
-                  <a className="nav-link" href="/addUpdateStudent">
-                     Create new student
+                  </li>
+                  <li className="nav-item">
+                     <a className="nav-link" href="/addUpdateStudent">
+                        Create new student
                   </a>
-               </li>
-            </ul>
+                  </li>
+               </ul>
+            </div>
          </nav>
       );
    }

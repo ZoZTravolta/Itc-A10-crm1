@@ -11,7 +11,6 @@ export function apiGetSkillsAndCoursesFromServer() {
    return axios.get(`${baseUrl}/getSkillsAndCourses`);
 }
 
-
 export function apiAddOrUpdateStudentInServer(student) {
    axios.post(`${baseUrl}/addOrUpdateStudent`, {
       student: student,
@@ -23,6 +22,17 @@ export function apiAddOrUpdateStudentInServer(student) {
          return error;
       });
    return axios.post(`${baseUrl}/addOrUpdateStudent`);
+}
+
+export function apiDeleteStudentFromServer(id) {
+   axios.delete(`${baseUrl}/deleteStudent/` + id)
+      .then(function (response) {
+         return response
+      })
+      .catch(function (error) {
+         return error;
+      });
+   // return axios.delete(`${baseUrl}/deleteStudent`);
 }
 
 

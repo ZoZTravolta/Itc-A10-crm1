@@ -105,15 +105,10 @@ def add_or_update_student():
             "desired": stu['desired'],
             "interested": stu['interested']
         }
-        # print(new_student)
         STUDENTS.append(new_student)
 
-            # if stu['id'] in STUDENTS['id']:
-            #     print (stu)
 
-    return 'hi'
-    # return jsonify([new_student])
-    # return jsonify({'students': STUDENTS})
+    return 'Success'
 
 
 @app.route("/api/getSkillsAndCourses")
@@ -124,21 +119,12 @@ def get_skills():
         list_Of_skills.append(skill.name)
     return json.dumps({"skills" :list_Of_skills , "courses": COURSES})
 
-
-# @app.route("/api/getOneStudent/<string:id>", methods=['GET'] )
-# def getOneStudent(id):
-#     for student in STUDENTS:
-#         if student['id'] == int(id):
-#             return jsonify(student)
-#         else:
-#             return 'error'
-#
-#     # student = [student for student in STUDENTS if  STUDENTS['id'] == id]
-#     # print(student)
-#     # return student
-
-# @app.route("/api/postNewStudent" , methods=['POST'])
-
+@app.route("/api/deleteStudent/<string:id>" , methods=['DELETE'])
+def delete_student(id):
+    for index, student in enumerate(STUDENTS):
+        if id == student['id']:
+            STUDENTS.pop(index)
+    return 'delete'
 
 def startServer():
     app.run(debug=True)

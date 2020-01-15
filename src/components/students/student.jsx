@@ -1,5 +1,5 @@
 import React from "react";
-
+import { apiDeleteStudentFromServer } from './../../api/api'
 function Student(props) {
    let dateCreatedObj = new Date(props.student["created"] * 1000);
    let utcString = dateCreatedObj.toUTCString();
@@ -8,6 +8,10 @@ function Student(props) {
    let dateUpdatedObj = new Date(props.student["updated"] * 1000);
    let utcStringU = dateUpdatedObj.toUTCString();
    let dateUpdated = utcStringU.slice(0, -12);
+
+   const deleteStudentInServer = () => {
+      apiDeleteStudentFromServer(props.student['id'])
+   }
 
    return (
       <div className="Student box">
@@ -50,9 +54,11 @@ function Student(props) {
             <a className="btn btn-primary edit" href={`addUpdateStudent/?id=${props.student["id"]}`} >
                Edit Student
             </a>
-            <a className="btn btn-danger edit" href={`addUpdateStudent/?id=${props.student["id"]}`} >
+            <button className="btn btn-danger edit" onClick={() => {
+               deleteStudentInServer()
+            }} >
                Delete Student
-            </a>
+            </button>
          </div>
       </div>
    );

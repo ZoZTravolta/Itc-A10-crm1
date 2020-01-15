@@ -1,7 +1,8 @@
 import React from "react";
 import { apiGetStudentsFromServer } from "../../api/api";
+import Student from "./student";
 
-class Dashboard extends React.Component {
+class StudentsList extends React.Component {
    constructor(props) {
       super(props);
       this.state = {
@@ -25,23 +26,21 @@ class Dashboard extends React.Component {
    render() {
       return (
          <div>
-            <h1>Dashboard</h1>
-            {/* <div className="jumbotron">
+            <div className="jumbotron">
                <div className="container">
-                  <h1 className="display-3">Dashboard</h1>
-                  <p>welcom to...</p>
+                  <h1 className="display-3">Students list</h1>
                </div>
             </div>
             <div className="container">
                {this.state.students.length !== 0
                   ? this.state.students.map(student => {
-                       return <Student key={student["id"]} student={student} />;
-                    })
+                     return <Student key={student["id"]} student={student} />;
+                  })
                   : null}
-            </div> */}
+            </div>
          </div>
       );
    }
 }
 
-export default Dashboard;
+export default StudentsList;

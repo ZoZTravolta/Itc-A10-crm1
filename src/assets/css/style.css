@@ -2,6 +2,7 @@
   background-image: url("../images/hogwarts-castle-.jpg");
   background-position-y: center;
   color: white;
+  border-radius: 0;
 }
 
 .jumbotron h1 {
