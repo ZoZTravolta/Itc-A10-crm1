@@ -9,8 +9,9 @@ from skills import SKILLS
 
 import random
 import string
-randomId = ''.join([random.choice(string.ascii_letters + string.digits) for n in range(32)])
-
+def createRandomId():
+    randomId = ''.join([random.choice(string.ascii_letters + string.digits) for n in range(32)])
+    return randomId
 
 
 app = Flask(__name__)
@@ -74,25 +75,42 @@ def get_students(id):
     return jsonify({'students': studentsList})
 
 
-@app.route("/api/addNewStudent", methods=['POST'])
-def add_new_student():
+@app.route("/api/addOrUpdateStudent", methods=['POST'])
+def add_or_update_student():
     data = request.get_json()
+    sId = ''
+
     if data != None:
+
         stu = data['student']
 
+        if not stu['id']:
+            sId = createRandomId()
+            if 1001 in stu['interested']:
+                stu['interested'].remove(1001)
+
+        else:
+            sId = stu['id']
+            for index , student  in enumerate(STUDENTS):
+                if stu['id'] == student['id']:
+                    STUDENTS.pop(index)
 
         new_student = {
-                       "id": randomId,
-                       "first_name": stu['first_name'],
-                       "last_name": stu['last_name'],
-                       "created": time.time(),
-                       "updated": time.time(),
-                       "existing": stu['existing'],
-                       "desired": stu['desired'],
-                       "interested": stu['interested']
-                       }
-        print(new_student)
+            "id": sId,
+            "first_name": stu['first_name'],
+            "last_name": stu['last_name'],
+            "created": time.time(),
+            "updated": time.time(),
+            "existing": stu['existing'],
+            "desired": stu['desired'],
+            "interested": stu['interested']
+        }
+        # print(new_student)
         STUDENTS.append(new_student)
+
+            # if stu['id'] in STUDENTS['id']:
+            #     print (stu)
+
     return 'hi'
     # return jsonify([new_student])
     # return jsonify({'students': STUDENTS})

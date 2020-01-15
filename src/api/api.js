@@ -12,8 +12,8 @@ export function apiGetSkillsAndCoursesFromServer() {
 }
 
 
-export function apiaddNewStudentInServer(student) {
-   axios.post(`${baseUrl}/addNewStudent`, {
+export function apiAddOrUpdateStudentInServer(student) {
+   axios.post(`${baseUrl}/addOrUpdateStudent`, {
       student: student,
    })
       .then(function (response) {
@@ -22,7 +22,7 @@ export function apiaddNewStudentInServer(student) {
       .catch(function (error) {
          return error;
       });
-   return axios.post(`${baseUrl}/addNewStudent`);
+   return axios.post(`${baseUrl}/addOrUpdateStudent`);
 }
 
 

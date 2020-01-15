@@ -31,14 +31,14 @@ class CreateStudent extends React.Component {
       }
    }
 
-   async addNewStudentInServer(student) {
-      try {
-         const res = await apiaddNewStudentInServer(student);
-         console.log(res)
-      } catch {
-         console.log("error");
-      }
-   }
+   // async addNewStudentInServer(student) {
+   //    try {
+   //       const res = await apiaddNewStudentInServer(student);
+   //       console.log(res)
+   //    } catch {
+   //       console.log("error");
+   //    }
+   // }
 
    componentDidMount() {
       this.getSkillsAndCoursesFromServer();

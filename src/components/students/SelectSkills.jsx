@@ -3,9 +3,15 @@ import React from "react";
 class SelectSkills extends React.Component {
    constructor(props) {
       super(props);
-      this.state = {};
+      this.state = {
+         defaultLevel: this.props.defaultLevel,
+         defaultOption: this.props.defaultOption
+      };
    }
 
+   handleChange(value) {
+      this.setState({ defaultOption: value })
+   }
    render() {
       return (
          <div key={this.props.iselect} className="row">
@@ -13,9 +19,10 @@ class SelectSkills extends React.Component {
                <label htmlFor=""> </label>
                <select
                   className="custom-select d-block w-100"
-                  id={"existingSkill-" + this.props.iselect}
-                  value = {this.props.default}
+                  id={this.props.id + this.props.index}
+                  value={this.state.defaultOption}
                   onChange={(e) => {
+                     this.handleChange(e.target.value)
                      this.props.handleChangeExistingSkillName(e)
                   }}
                >
@@ -32,12 +39,14 @@ class SelectSkills extends React.Component {
                <input
                   type="range"
                   className="custom-range"
-                  id={"existingLevel-" + this.props.iselect}
-                  data-skill-ref={"existingSkill-" + this.props.iselect}
+                  id={this.props.id + this.props.iselect}
+                  data-skill-ref={this.props.id + this.props.index}
                   max="5"
                   min="1"
-                  onChange={(r) => {
-                     this.props.handleChangeExistingLevel(r)
+                  value={this.state.defaultLevel}
+                  onChange={(e) => {
+                     this.setState({ defaultLevel: e.target.value })
+                     this.props.handleChangeExistingLevel(e)
                   }}
                />
             </div>

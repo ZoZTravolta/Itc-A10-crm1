@@ -22,7 +22,7 @@ function Student(props) {
                {props.student["existing"].map(skill => {
                   return (
                      <li key={skill}>
-                        {skill[0]} level: {parseInt(100 / skill[1])}%,
+                        {skill[0]} level: {parseInt(20 * skill[1])}%,
                      </li>
                   );
                })}
@@ -34,7 +34,7 @@ function Student(props) {
                {props.student["desired"].map(skill => {
                   return (
                      <li key={skill}>
-                        {skill[0]} level: {parseInt(100 / skill[1])}%,
+                        {skill[0]} level: {parseInt(20 * skill[1])}%,
                      </li>
                   );
                })}
@@ -47,11 +47,11 @@ function Student(props) {
             })}
          </div>
          <div>
-            <a
-               className="btn edit"
-               href={`UpdateStudent/?id=${props.student["id"]}`}
-            >
+            <a className="btn btn-primary edit" href={`addUpdateStudent/?id=${props.student["id"]}`} >
                Edit Student
+            </a>
+            <a className="btn btn-danger edit" href={`addUpdateStudent/?id=${props.student["id"]}`} >
+               Delete Student
             </a>
          </div>
       </div>

@@ -19,7 +19,7 @@ class Navbar extends React.Component {
                   </a>
                </li>
                <li className="nav-item">
-                  <a className="nav-link" href="/createstudent">
+                  <a className="nav-link" href="/addUpdateStudent">
                      Create new student
                   </a>
                </li>
