@@ -25,18 +25,20 @@ class StudentsList extends React.Component {
 
    render() {
       return (
-         <div>
+         <div className="content">
             <div className="jumbotron">
                <div className="container">
                   <h1 className="display-3">Students list</h1>
                </div>
             </div>
             <div className="container">
-               {this.state.students.length !== 0
-                  ? this.state.students.map(student => {
-                     return <Student key={student["id"]} student={student} />;
-                  })
-                  : null}
+               <div className="row">
+                  {this.state.students.length !== 0
+                     ? this.state.students.map(student => {
+                        return <Student key={student["id"]} student={student} />;
+                     })
+                     : null}
+               </div>
             </div>
          </div>
       );

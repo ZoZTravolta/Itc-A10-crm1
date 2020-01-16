@@ -69,7 +69,8 @@ def get_students(id):
                       'desired': desiredList,
                       'desired_indexes': student['desired'],
                       'interested': interestedList,
-                      'interested_indexes': student['interested']
+                      'interested_indexes': student['interested'],
+                      'pic': student['pic']
                       }
         studentsList.append(theStudent)
     return jsonify({'students': studentsList})
@@ -103,7 +104,8 @@ def add_or_update_student():
             "updated": time.time(),
             "existing": stu['existing'],
             "desired": stu['desired'],
-            "interested": stu['interested']
+            "interested": stu['interested'],
+            "pic": stu['pic']
         }
         STUDENTS.append(new_student)
 

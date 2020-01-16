@@ -3,7 +3,6 @@ import { apiGetSkillsAndCoursesFromServer, apiAddOrUpdateStudentInServer, apiGet
 import CourseCheckbox from './CourseCheckbox'
 import SelectSkills from '../students/SelectSkills'
 
-//? import { apiGetStudentsFromServer } from "../../api/api";
 
 class AddUpdateStudent extends React.Component {
    constructor(props) {
@@ -57,20 +56,20 @@ class AddUpdateStudent extends React.Component {
 
    setStudentInfo(student) {
       // console.log(student['existing_indexes'])
-      if (student['first_name'] != null){
-         for (let i=0; i< Object.keys(student['existing_indexes']).length; i++){
-            this.setState({
-               ['existingSkill_'+i]: {skill: Object.keys(student['existing_indexes'])[i], level:Object.values(student['existing_indexes'])[i] }
-          })
-         }
-   
-         for (let i=0; i< Object.keys(student['desired_indexes']).length; i++){
-            this.setState({
-               ['desiredSkill_'+i]: {skill: Object.keys(student['desired_indexes'])[i], level:Object.values(student['desired_indexes'])[i] }
-          })
-         }
+      // if (student['first_name'] != null) {
+      for (let i = 0; i < Object.keys(student['existing_indexes']).length; i++) {
+         this.setState({
+            ['existingSkill_' + i]: { skill: Object.keys(student['existing_indexes'])[i], level: Object.values(student['existing_indexes'])[i] }
+         })
       }
-     
+
+      for (let i = 0; i < Object.keys(student['desired_indexes']).length; i++) {
+         this.setState({
+            ['desiredSkill_' + i]: { skill: Object.keys(student['desired_indexes'])[i], level: Object.values(student['desired_indexes'])[i] }
+         })
+      }
+      // }
+
 
       this.setState({
          id: student['id'],
@@ -82,6 +81,7 @@ class AddUpdateStudent extends React.Component {
          numOfSelectD: student['desired'],
          exSkillsList: student['existing_indexes'],
          deSkillsList: student['desired_indexes'],
+         pic: student['pic']
       }, () => { console.log(this.state) })
    }
 
@@ -89,26 +89,27 @@ class AddUpdateStudent extends React.Component {
       this.getSkillsAndCoursesFromServer();
       const url = window.location;
       const id = new URLSearchParams(url.search).get("id");
-      if (!id){
+      if (!id) {
          const student = {
-            id : null,
+            id: null,
             first_name: null,
             studentFirstName: null,
             studentLastName: '',
-            interested_indexes:[1001],
+            interested_indexes: [1001],
             Interested: '',
             numOfSelect: [0],
             numOfSelectD: [0],
-            exSkillsList: {0:3},
-            deSkillsList: {0:3},
+            exSkillsList: { 1: 3 },
+            deSkillsList: { 1: 3 },
             existing: [0],
             desired: [0],
-            existing_indexes: {0: 3},
-            desired_indexes: {0:3}
+            existing_indexes: { 1: 3 },
+            desired_indexes: { 1: 3 },
+            pic: null
          }
          this.setStudentInfo(student)
       }
-      else{
+      else {
          this.getStudentFromServer(id);
       }
    }
@@ -116,162 +117,98 @@ class AddUpdateStudent extends React.Component {
 
 
 
-   handleChangeExistingSkillName(e) {
+   handleChangeSkillName(e) {
       let akey = e.target.id
       let avalue = e.target.value
 
       let prevLevel = "3"
-      if (this.state[akey]){
+      if (this.state[akey]) {
          prevLevel = this.state[akey]['level']
       }
 
-      this.setState({  
-         [akey]: {skill: avalue , level: prevLevel} 
-      } , ()=>{
+      this.setState({
+         [akey]: { skill: avalue, level: prevLevel }
+      }, () => {
          console.log(this.state)
       })
 
 
-      // this.setState(prevState => {
-      //    return {
-      //       existingList: {
-      //          ...prevState.existingList,
-      //          [akey]: { ...prevState.existingList[akey], skill: avalue, level: "5" },
-      //          // [akey]: { skill: avalue },
-      //       }
-      //    }
-      // }, () => console.log(this.state.existingList))
+
    }
 
-   handleChangeExistingLevel(e) {
+   handleChangeLevel(e) {
       let akey = e.target.dataset.skillRef
       let avalue = e.target.value
 
       let prevSkill = ""
-      if (this.state[akey]){
+      if (this.state[akey]) {
          prevSkill = this.state[akey]['skill']
       }
 
-      this.setState({  
-         [akey]: {skill: prevSkill , level: avalue} 
-      } , ()=>{
+      this.setState({
+         [akey]: { skill: prevSkill, level: avalue }
+      }, () => {
          console.log(this.state)
       })
 
-      // this.setState(prevState => {
-      //    return {
-      //       existingList: {
-      //          ...prevState.existingList,
-      //          [akey]: { ...prevState.existingList[akey], level: avalue },
-      //       }
-      //    }
-      // }, () => console.log(this.state.existingList))
+
    }
 
-   handleChangeDesiredSkillName(e) {
-      this.handleChangeExistingSkillName(e)
-      // let akey = e.target.id
-      // let avalue = e.target.value
-      // this.setState(prevState => {
-      //    return {
-      //       desiredList: {
-      //          ...prevState.desiredList,
-      //          [akey]: { ...prevState.desiredList[akey], skill: avalue, level: "5" },
-      //          // [akey]: { skill: avalue },
-      //       }
-      //    }
-      // }, () => console.log(this.state.desiredList))
-   }
-
-   handleChangeDesiredLevel(e) {
-      this.handleChangeExistingLevel(e)
-      // let akey = e.target.dataset.skillRef
-      // let avalue = e.target.value
-      // this.setState(prevState => {
-      //    return {
-      //       desiredList: {
-      //          ...prevState.desiredList,
-      //          [akey]: { ...prevState.desiredList[akey], level: avalue },
-      //       }
-      //    }
-      // }, () => console.log(this.state.desiredList))
-   }
 
    handleCheckbox(e, isChecked) {
       let interested = this.state.interested_indexes
       let boxInt = e.target.value
-      
       boxInt = parseInt(boxInt)
       if (isChecked && !this.state.interested_indexes.includes(boxInt))
          interested.push(parseInt(e.target.value))
       else {
          interested.pop(e.target.value)
       }
-      
-      this.setState({ Interested: interested }, ()=> console.log(this.state.Interested))
+      this.setState({ Interested: interested }, () => console.log(this.state.Interested))
    }
 
    handleSubmit() {
-
-      let exSkillsList = {}
-      for (let i=0; i < this.state.numOfSelect.length ; i++){
-         let sk = Object.values(this.state['existingSkill_'+i])
-         let key = sk[0]
-         let val = sk[1]
-         exSkillsList[key] = val
+      if (!this.state.studentFirstName || !this.state.studentLastName || !this.state.pic || this.state.Interested.length === 1) {
+         alert('please fill all the form!')
       }
-      let deSkillsList = {}
-      for (let i=0; i < this.state.numOfSelect.length ; i++){
-         let sk = Object.values(this.state['desiredSkill_'+i])
-         let key = sk[0]
-         let val = sk[1]
-         deSkillsList[key] = val
+      else {
+         let exSkillsList = {}
+         for (let i = 0; i < this.state.numOfSelect.length; i++) {
+            let sk = Object.values(this.state['existingSkill_' + i])
+            let key = sk[0]
+            let val = sk[1]
+            exSkillsList[key] = val
+         }
+         let deSkillsList = {}
+         for (let i = 0; i < this.state.numOfSelectD.length; i++) {
+            let sk = Object.values(this.state['desiredSkill_' + i])
+            let key = sk[0]
+            let val = sk[1]
+            deSkillsList[key] = val
+         }
+
+         const JsonStudent = {
+            'id': this.state.id,
+            'first_name': this.state.studentFirstName,
+            "last_name": this.state.studentLastName,
+            "existing": exSkillsList,
+            "desired": deSkillsList,
+            "interested": this.state.Interested,
+            "pic": this.state.pic
+         }
+         this.addUpdateStudentInServer(JsonStudent)
+         window.location.href = '/StudentsList';
       }
 
-
-
-
-      // const exSkills = Object.values(this.state.existingList)
-      // for (let exSkill of exSkills) {
-      //    const key = Object.values(exSkill)[0]
-      //    const val = Object.values(exSkill)[1]
-      //    exSkillsList[key] = val
-      // }
-
-      // const deSkills = Object.values(this.state.desiredList)
-      // for (let deSkill of deSkills) {
-      //    const key = Object.values(deSkill)[0]
-      //    const val = Object.values(deSkill)[1]
-      //    deSkillsList[key] = val
-      // }
-
-
-      // if (this.state.Interested.includes(1001)){
-      //    this.state.Interested.pop(1001)
-      // }
-
-      // this.state.Interested.splice( this.state.Interested.indexOf(1001), 1 );
-
-      const JsonStudent = {
-         'id': this.state.id,
-         'first_name': this.state.studentFirstName, 
-         "last_name": this.state.studentLastName,
-         "existing": exSkillsList,
-         "desired":deSkillsList,
-         "interested": this.state.Interested
-      }
-      
-      console.log(JsonStudent)
-      this.addUpdateStudentInServer(JsonStudent)
    }
 
    render() {
       return (
-         <div>
+         <div className="content">
             <div className="jumbotron">
                <div className="container">
                   <h1 className="display-3">
-                  {this.state.id? 'Update student' : 'Create student' }
+                     {this.state.id ? 'Update student' : 'Create student'}
                   </h1>
                </div>
             </div>
@@ -310,6 +247,24 @@ class AddUpdateStudent extends React.Component {
                      </div>
                   </div>
                </div>
+               <div className="row">
+                  <div className="col-md-12 mb-3">
+                     <label htmlFor="firstName">Student picture URL</label>
+                     <input
+                        type="text"
+                        className="form-control"
+                        id="firstName"
+                        placeholder={this.state.pic}
+                        onChange={(e) => {
+                           this.setState({ pic: e.target.value })
+                        }}
+                     />
+                     <div className="invalid-feedback">
+                        Valid first name is required.
+                     </div>
+                     <a target="_blank" rel="noopener noreferrer" href="https://www.flaticon.com/search?word=magic"><small>*Hint: find images here</small></a>
+                  </div>
+               </div>
                <hr className="mb-4" />
 
                <div className="row">
@@ -318,11 +273,11 @@ class AddUpdateStudent extends React.Component {
 
 
                      {this.state.Skills.length !== 0 && this.state.interested_indexes.length !== 0 && this.state.numOfSelect.map((iselect, index) => (
-                        <SelectSkills id="existingSkill_" defaultOption={Object.keys(this.state.exSkillsList)[index]} defaultLevel={Object.values(this.state.exSkillsList)[index]} key={iselect} iselect={iselect} index={index} selectedVal={null} Skills={this.state.Skills} handleChangeExistingSkillName={this.handleChangeExistingSkillName.bind(this)} handleChangeExistingLevel={this.handleChangeExistingLevel.bind(this)} />
+                        <SelectSkills id="existingSkill_" defaultOption={Object.keys(this.state.exSkillsList)[index]} defaultLevel={Object.values(this.state.exSkillsList)[index]} key={iselect} iselect={iselect} index={index} selectedVal={null} Skills={this.state.Skills} handleChangeSkillName={this.handleChangeSkillName.bind(this)} handleChangeLevel={this.handleChangeLevel.bind(this)} />
                      ))}
 
-                    
-                        
+
+
                      <div className="row">
                         <div className="col-md-12">
                            <button className="btn btn-primary" onClick={() => {
@@ -343,7 +298,7 @@ class AddUpdateStudent extends React.Component {
                      <h3>Desired Skills</h3>
 
                      {this.state.Skills.length !== 0 && this.state.interested_indexes.length !== 0 && this.state.numOfSelectD.map((iselect, index) => (
-                        <SelectSkills id="desiredSkill_" defaultOption={Object.keys(this.state.deSkillsList)[index]} defaultLevel={Object.values(this.state.deSkillsList)[index]} key={iselect} iselect={iselect} index={index} Skills={this.state.Skills} handleChangeExistingSkillName={this.handleChangeDesiredSkillName.bind(this)} handleChangeExistingLevel={this.handleChangeDesiredLevel.bind(this)} />
+                        <SelectSkills id="desiredSkill_" defaultOption={Object.keys(this.state.deSkillsList)[index]} defaultLevel={Object.values(this.state.deSkillsList)[index]} key={iselect} iselect={iselect} index={index} Skills={this.state.Skills} handleChangeSkillName={this.handleChangeSkillName.bind(this)} handleChangeLevel={this.handleChangeLevel.bind(this)} />
                      ))}
 
 
@@ -369,7 +324,7 @@ class AddUpdateStudent extends React.Component {
                      <h3>Interested in courses</h3>
                   </div>
 
-                  {this.state.interested_indexes.length !== 0 && this.state.courses !==0 && this.state.courses.map((course, index) => (
+                  {this.state.interested_indexes.length !== 0 && this.state.courses !== 0 && this.state.courses.map((course, index) => (
                      <div key={course} className="col-md-12">
                         <CourseCheckbox Checked={this.state.interested_indexes.includes(index)} course={course} index={index} handleCheckbox={this.handleCheckbox.bind(this)} />
                      </div>
@@ -386,9 +341,9 @@ class AddUpdateStudent extends React.Component {
                      this.handleSubmit()
                   }}
                >
-                  {this.state.id? 'Update student' : 'Create student' }
-                     
-                  
+                  {this.state.id ? 'Update student' : 'Create student'}
+
+
                </button>
 
 

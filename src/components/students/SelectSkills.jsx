@@ -23,7 +23,7 @@ class SelectSkills extends React.Component {
                   value={this.state.defaultOption}
                   onChange={(e) => {
                      this.handleChange(e.target.value)
-                     this.props.handleChangeExistingSkillName(e)
+                     this.props.handleChangeSkillName(e)
                   }}
                >
                   ><option value="">Choose...</option>
@@ -46,7 +46,7 @@ class SelectSkills extends React.Component {
                   value={this.state.defaultLevel}
                   onChange={(e) => {
                      this.setState({ defaultLevel: e.target.value })
-                     this.props.handleChangeExistingLevel(e)
+                     this.props.handleChangeLevel(e)
                   }}
                />
             </div>
