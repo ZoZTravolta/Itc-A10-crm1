@@ -49,14 +49,14 @@ class AddUpdateStudent extends React.Component {
       try {
          const res = await apiAddOrUpdateStudentInServer(student);
          console.log(res)
+         window.location.href = '/';
       } catch {
          console.log("error");
       }
    }
 
    setStudentInfo(student) {
-      // console.log(student['existing_indexes'])
-      // if (student['first_name'] != null) {
+
       for (let i = 0; i < Object.keys(student['existing_indexes']).length; i++) {
          this.setState({
             ['existingSkill_' + i]: { skill: Object.keys(student['existing_indexes'])[i], level: Object.values(student['existing_indexes'])[i] }
@@ -68,7 +68,6 @@ class AddUpdateStudent extends React.Component {
             ['desiredSkill_' + i]: { skill: Object.keys(student['desired_indexes'])[i], level: Object.values(student['desired_indexes'])[i] }
          })
       }
-      // }
 
       student['interested_indexes'].push(1001)
 
@@ -149,10 +148,7 @@ class AddUpdateStudent extends React.Component {
 
       this.setState({
          [akey]: { skill: prevSkill, level: avalue }
-      }, () => {
-         console.log(this.state)
       })
-
 
    }
 
@@ -168,7 +164,6 @@ class AddUpdateStudent extends React.Component {
          if (index > -1) {
             this.state.interested_indexes.splice(index, 1);
          }
-         // interested.pop(e.target.value)
       }
       this.setState({ Interested: interested }, () => console.log(this.state.Interested))
    }
@@ -202,8 +197,8 @@ class AddUpdateStudent extends React.Component {
             "interested": this.state.Interested,
             "pic": this.state.pic
          }
+
          this.addUpdateStudentInServer(JsonStudent)
-         window.location.href = '/';
       }
 
    }
@@ -277,12 +272,9 @@ class AddUpdateStudent extends React.Component {
                   <div className="col-md-12">
                      <h3>Existing Skills</h3>
 
-
                      {this.state.Skills.length !== 0 && this.state.exSkillsList && this.state.numOfSelect.map((iselect, index) => (
                         <SelectSkills id="existingSkill_" defaultOption={Object.keys(this.state.exSkillsList)[index]} defaultLevel={Object.values(this.state.exSkillsList)[index]} key={iselect} iselect={iselect} index={index} selectedVal={null} Skills={this.state.Skills} handleChangeSkillName={this.handleChangeSkillName.bind(this)} handleChangeLevel={this.handleChangeLevel.bind(this)} />
                      ))}
-
-
 
                      <div className="row">
                         <div className="col-md-12">
@@ -307,7 +299,6 @@ class AddUpdateStudent extends React.Component {
                         <SelectSkills id="desiredSkill_" defaultOption={Object.keys(this.state.deSkillsList)[index]} defaultLevel={Object.values(this.state.deSkillsList)[index]} key={iselect} iselect={iselect} index={index} Skills={this.state.Skills} handleChangeSkillName={this.handleChangeSkillName.bind(this)} handleChangeLevel={this.handleChangeLevel.bind(this)} />
                      ))}
 
-
                      <div className="row">
                         <div className="col-md-12">
                            <button className="btn btn-primary" onClick={() => {
@@ -319,7 +310,6 @@ class AddUpdateStudent extends React.Component {
                         </div>
                      </div>
                   </div>
-
                </div>
 
 
@@ -337,7 +327,6 @@ class AddUpdateStudent extends React.Component {
                   ))}
                </div>
 
-
                <hr className="mb-4" />
 
                <button
@@ -345,14 +334,9 @@ class AddUpdateStudent extends React.Component {
                   type="submit"
                   onClick={() => {
                      this.handleSubmit()
-                  }}
-               >
+                  }}>
                   {this.state.id ? 'Update student' : 'Create student'}
-
-
                </button>
-
-
             </div>
          </div>
       );

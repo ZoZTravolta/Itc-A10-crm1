@@ -10,9 +10,20 @@ function Student(props) {
    let dateUpdatedObj = new Date(props.student["updated"] * 1000);
    let dateUpdated = dateUpdatedObj.toLocaleDateString() + ' ' + dateUpdatedObj.toLocaleTimeString();
 
-   const deleteStudentInServer = (id) => {
-      apiDeleteStudentFromServer(id)
-      window.location.href = '/';
+   // const deleteStudentInServer = (id) => {
+   //    apiDeleteStudentFromServer(id)
+   //    window.location.href = '/';
+   // }
+
+   const deleteStudentInServer = async (id) => {
+      try {
+         const res = await apiDeleteStudentFromServer(id);
+         console.log(res)
+         // window.location.href = '/';
+      } catch {
+         // window.location.href = '/';
+         console.log(">> error");
+      }
    }
 
    return (
@@ -44,7 +55,7 @@ function Student(props) {
                <div id={`collapse${props.student['id']}`} className="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
                   <div className="card-body">
                      <h3 className="mb-0">
-                        <span className="text-primary" href="#">{props.student["first_name"]} {props.student["last_name"]} {props.student["id"]}</span>
+                        <span className="text-primary" href="#">{props.student["first_name"]} {props.student["last_name"]}</span>
                      </h3>
                      <div className="mb-1 text-muted">Created: {dateCreated} | Updated: {dateUpdated}</div>
                      <hr className="mt-2" />

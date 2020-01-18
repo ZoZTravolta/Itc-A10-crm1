@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = 'http://127.0.0.1:5000/api'  //'http://itc-crm-as10.herokuapp.com/api'  //'http://127.0.0.1:5000/api'//"https://itc-bootcamp-19-dot-charcha-dev.appspot.com/tweet";
+const baseUrl = 'https://itc-crm-as10.herokuapp.com/api'  //'http://127.0.0.1:5000/api'
 
 
 
@@ -27,20 +27,15 @@ export function apiAddOrUpdateStudentInServer(student) {
 export function apiDeleteStudentFromServer(id) {
    axios.delete(`${baseUrl}/deleteStudent/` + id)
       .then(function (response) {
+         window.location.href = '/';
          return response
       })
       .catch(function (error) {
-         return error;
+         window.location.href = '/';
+         return '>>' + error;
       });
-   // return axios.delete(`${baseUrl}/deleteStudent`);
+
 }
 
 
 
-
-// export function deleteProduct(productId) {
-//     return axios.delete(`${baseUrl}/products/${productId}`);
-// }
-// export function apiAddTweetToServer(userName, content, date) {
-//    return axios.post(`${baseUrl}`, { tweet: { content: content, userName: userName, date: date } });
-// }

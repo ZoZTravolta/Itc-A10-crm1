@@ -2,7 +2,7 @@ import React from "react";
 import { apiGetStudentsFromServer } from "../../api/api";
 import Student from "./Student";
 import PieChart from '../charts/PieChart'
-
+import LineChart from '../charts/LineChart'
 
 class StudentsList extends React.Component {
    constructor(props) {
@@ -45,11 +45,13 @@ class StudentsList extends React.Component {
                         : null}
                   </div>
                   <div className="col-md-4">
+                     <h5 className="">Existing skills of all students</h5>
                      {this.state.students.length > 0 &&
                         <PieChart students={this.state.students} />
                      }
+                     <h5 className="mt-5">interested lessons</h5>
                      {this.state.students.length > 0 &&
-                        <PieChart students={this.state.students} />
+                        <LineChart students={this.state.students} />
                      }
 
                   </div>
