@@ -48,6 +48,9 @@ class StudentsList extends React.Component {
                      {this.state.students.length > 0 &&
                         <PieChart students={this.state.students} />
                      }
+                     {this.state.students.length > 0 &&
+                        <PieChart students={this.state.students} />
+                     }
 
                   </div>
                </div>
