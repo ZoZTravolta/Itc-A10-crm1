@@ -1,6 +1,6 @@
 import React from "react";
 import { apiGetStudentsFromServer } from "../../api/api";
-import PieChart from './PieChart'
+import PieChart from '../charts/PieChart'
 
 class Dashboard extends React.Component {
    constructor(props) {

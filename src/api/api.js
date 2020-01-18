@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = 'http://127.0.0.1:5000/api'//"https://itc-bootcamp-19-dot-charcha-dev.appspot.com/tweet";
+const baseUrl = 'http://127.0.0.1:5000/api'  //'http://itc-crm-as10.herokuapp.com/api'  //'http://127.0.0.1:5000/api'//"https://itc-bootcamp-19-dot-charcha-dev.appspot.com/tweet";
 
 
 

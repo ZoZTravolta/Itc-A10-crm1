@@ -9,7 +9,7 @@ class Modal extends React.Component {
    render() {
       return (
          <>
-            <div className="modal fade" id="exampleModalCenter" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div className="modal fade" id={`modal_${this.props.student["id"]}`} tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                <div className="modal-dialog modal-dialog-centered" role="document">
                   <div className="modal-content">
                      <div className="modal-header">
@@ -24,7 +24,7 @@ class Modal extends React.Component {
                      <div className="modal-footer">
                         <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="button" className="btn btn-danger" onClick={() => {
-                           this.props.deleteStudentInServer()
+                           this.props.deleteStudentInServer(this.props.student["id"])
                         }}>I'm sure</button>
                      </div>
                   </div>

@@ -3,7 +3,6 @@ import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import StudentPage from './components/students/StudentPage'
 import AddUpdateStudent from './components/students/AddUpdateStudent'
-import Dashboard from './components/students/Dashboard'
 import StudentsList from './components/students/StudentsList'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
@@ -18,9 +17,6 @@ function App() {
         <Navbar />
         <Switch>
           <Route exact path={"/"} >
-            <Dashboard />
-          </Route>
-          <Route exact path={"/studentsList"} >
             <StudentsList />
           </Route>
           <Route path={"/studentPage"} >

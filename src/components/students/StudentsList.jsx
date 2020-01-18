@@ -1,6 +1,8 @@
 import React from "react";
 import { apiGetStudentsFromServer } from "../../api/api";
-import Student from "./student";
+import Student from "./Student";
+import PieChart from '../charts/PieChart'
+
 
 class StudentsList extends React.Component {
    constructor(props) {
@@ -33,11 +35,21 @@ class StudentsList extends React.Component {
             </div>
             <div className="container">
                <div className="row">
-                  {this.state.students.length !== 0
-                     ? this.state.students.map(student => {
-                        return <Student key={student["id"]} student={student} />;
-                     })
-                     : null}
+                  <div className="col-md-8 StudentBox">
+                     {this.state.students.length !== 0
+                        ? this.state.students.map(student => {
+                           return (
+                              <Student key={student["id"]} student={student} />
+                           );
+                        })
+                        : null}
+                  </div>
+                  <div className="col-md-4">
+                     {this.state.students.length > 0 &&
+                        <PieChart students={this.state.students} />
+                     }
+
+                  </div>
                </div>
             </div>
          </div>

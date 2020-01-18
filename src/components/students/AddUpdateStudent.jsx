@@ -70,6 +70,7 @@ class AddUpdateStudent extends React.Component {
       }
       // }
 
+      student['interested_indexes'].push(1001)
 
       this.setState({
          id: student['id'],
@@ -81,7 +82,7 @@ class AddUpdateStudent extends React.Component {
          numOfSelectD: student['desired'],
          exSkillsList: student['existing_indexes'],
          deSkillsList: student['desired_indexes'],
-         pic: student['pic']
+         pic: student['pic'],
       }, () => { console.log(this.state) })
    }
 
@@ -93,9 +94,10 @@ class AddUpdateStudent extends React.Component {
          const student = {
             id: null,
             first_name: null,
+            last_name: null,
             studentFirstName: null,
             studentLastName: '',
-            interested_indexes: [1001],
+            interested_indexes: [],
             Interested: '',
             numOfSelect: [0],
             numOfSelectD: [0],
@@ -162,7 +164,11 @@ class AddUpdateStudent extends React.Component {
       if (isChecked && !this.state.interested_indexes.includes(boxInt))
          interested.push(parseInt(e.target.value))
       else {
-         interested.pop(e.target.value)
+         const index = this.state.interested_indexes.indexOf(parseInt(e.target.value));
+         if (index > -1) {
+            this.state.interested_indexes.splice(index, 1);
+         }
+         // interested.pop(e.target.value)
       }
       this.setState({ Interested: interested }, () => console.log(this.state.Interested))
    }
@@ -197,7 +203,7 @@ class AddUpdateStudent extends React.Component {
             "pic": this.state.pic
          }
          this.addUpdateStudentInServer(JsonStudent)
-         window.location.href = '/StudentsList';
+         window.location.href = '/';
       }
 
    }
@@ -253,7 +259,7 @@ class AddUpdateStudent extends React.Component {
                      <input
                         type="text"
                         className="form-control"
-                        id="firstName"
+                        id="pic"
                         placeholder={this.state.pic}
                         onChange={(e) => {
                            this.setState({ pic: e.target.value })
@@ -272,7 +278,7 @@ class AddUpdateStudent extends React.Component {
                      <h3>Existing Skills</h3>
 
 
-                     {this.state.Skills.length !== 0 && this.state.interested_indexes.length !== 0 && this.state.numOfSelect.map((iselect, index) => (
+                     {this.state.Skills.length !== 0 && this.state.exSkillsList && this.state.numOfSelect.map((iselect, index) => (
                         <SelectSkills id="existingSkill_" defaultOption={Object.keys(this.state.exSkillsList)[index]} defaultLevel={Object.values(this.state.exSkillsList)[index]} key={iselect} iselect={iselect} index={index} selectedVal={null} Skills={this.state.Skills} handleChangeSkillName={this.handleChangeSkillName.bind(this)} handleChangeLevel={this.handleChangeLevel.bind(this)} />
                      ))}
 
@@ -297,7 +303,7 @@ class AddUpdateStudent extends React.Component {
                   <div className="col-md-12">
                      <h3>Desired Skills</h3>
 
-                     {this.state.Skills.length !== 0 && this.state.interested_indexes.length !== 0 && this.state.numOfSelectD.map((iselect, index) => (
+                     {this.state.Skills.length !== 0 && this.state.deSkillsList && this.state.numOfSelectD.map((iselect, index) => (
                         <SelectSkills id="desiredSkill_" defaultOption={Object.keys(this.state.deSkillsList)[index]} defaultLevel={Object.values(this.state.deSkillsList)[index]} key={iselect} iselect={iselect} index={index} Skills={this.state.Skills} handleChangeSkillName={this.handleChangeSkillName.bind(this)} handleChangeLevel={this.handleChangeLevel.bind(this)} />
                      ))}
 

@@ -1,28 +1,25 @@
 import React from "react";
-import { apiDeleteStudentFromServer } from './../../api/api'
+import { apiDeleteStudentFromServer } from '../../api/api'
 import Modal from '../Modal'
 
 
 function Student(props) {
    let dateCreatedObj = new Date(props.student["created"] * 1000);
-   let utcString = dateCreatedObj.toUTCString();
-   let dateCreated = utcString.slice(0, -12);
+   let dateCreated = dateCreatedObj.toLocaleDateString() + ' ' + dateCreatedObj.toLocaleTimeString();
 
    let dateUpdatedObj = new Date(props.student["updated"] * 1000);
-   let utcStringU = dateUpdatedObj.toUTCString();
-   let dateUpdated = utcStringU.slice(0, -12);
+   let dateUpdated = dateUpdatedObj.toLocaleDateString() + ' ' + dateUpdatedObj.toLocaleTimeString();
 
-   const deleteStudentInServer = () => {
-      apiDeleteStudentFromServer(props.student['id'])
-      window.location.href = '/StudentsList';
+   const deleteStudentInServer = (id) => {
+      apiDeleteStudentFromServer(id)
+      window.location.href = '/';
    }
 
    return (
-
-
-
-      <div className="col-md-12 StudentBox">
-         <Modal student={props.student} deleteStudentInServer={deleteStudentInServer} />
+      <>
+         <Modal student={props.student} deleteStudentInServer={() => {
+            deleteStudentInServer(props.student["id"])
+         }} />
          <div className="accordion" id={`accordionExample${props.student['id']}`}>
             <div className="card">
                <div className="card-header d-flex" id="headingOne">
@@ -38,7 +35,7 @@ function Student(props) {
                      <a className="btn btn-primary btn-sm" href={`addUpdateStudent/?id=${props.student["id"]}`} >
                         Edit Student
                      </a>
-                     <button className="btn btn-danger btn-sm" data-toggle="modal" data-target="#exampleModalCenter" onClick={(e) => { e.stopPropagation() }} >
+                     <button className="btn btn-danger btn-sm" data-toggle="modal" data-target={`#modal_${props.student["id"]}`} onClick={(e) => { e.stopPropagation() }} >
                         Delete Student
                      </button>
                   </div>
@@ -47,7 +44,7 @@ function Student(props) {
                <div id={`collapse${props.student['id']}`} className="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
                   <div className="card-body">
                      <h3 className="mb-0">
-                        <span className="text-primary" href="#">{props.student["first_name"]} {props.student["last_name"]}</span>
+                        <span className="text-primary" href="#">{props.student["first_name"]} {props.student["last_name"]} {props.student["id"]}</span>
                      </h3>
                      <div className="mb-1 text-muted">Created: {dateCreated} | Updated: {dateUpdated}</div>
                      <hr className="mt-2" />
@@ -102,7 +99,7 @@ function Student(props) {
 
 
 
-      </div>
+      </>
 
 
 
